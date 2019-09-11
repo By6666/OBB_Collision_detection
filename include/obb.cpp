@@ -1,9 +1,14 @@
 #include "obb.h"
 
-/* 检测是否碰撞 */
+/* 检测是否碰撞
+ * 输入：无
+ * 输出：true 碰撞; false 不碰撞
+ * */
 bool OBB::IsCollision() {
+  /* 获得所有投影轴 */
   get_all_projection_axis();
 
+  /* 对象在投影轴上的投影范围 */
   for (auto& elem : projection_axis_) {
     if (!JudgeIntersecting(CalculateRange(elem, obj_1_),
                            CalculateRange(elem, obj_2_)))
@@ -24,7 +29,10 @@ void OBB::get_all_projection_axis() {
   }
 }
 
-/* 获得单个投影轴 */
+/* 获得单个投影轴
+ * 输入：待检测轴的向量
+ * 输出：输入轴的单位法相量
+ * */
 Point_type OBB::get_single_projection_axis(const Point_type& check_edge) {
   float length = sqrtf(powf(check_edge.x, 2.0f) + powf(check_edge.y, 2.0f));
   cv::Point2f result;
@@ -34,7 +42,10 @@ Point_type OBB::get_single_projection_axis(const Point_type& check_edge) {
   return result;
 }
 
-/* 计算一个obj在投影轴上的范围 */
+/* 计算一个obj在投影轴上的范围
+ * 输入：投影轴，被检测对象
+ * 输入：输入对象在输入投影轴上的范围
+ * */
 OBB::ResultRange OBB::CalculateRange(const Point_type& project_axis,
                                      const PointSet_type& obj) {
   float min = std::numeric_limits<float>::max();
